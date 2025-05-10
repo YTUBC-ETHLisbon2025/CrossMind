@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSK AI Agent</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .chat-container {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      height: 400px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+    .user-message {
+      background-color: #e1f5fe;
+      text-align: right;
+    }
+    .agent-message {
+      background-color: #f5f5f5;
+    }
+    .input-container {
+      display: flex;
+    }
+    #message-input {
+      flex-grow: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 8px 16px;
+      margin-left: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #reset-button {
+      background-color: #f44336;
+    }
+    #reset-button:hover {
+      background-color: #d32f2f;
+    }
+    .loading {
+      text-align: center;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>RSK AI Agent</h1>
+  <p>Ask questions about Rootstock blockchain or request operations.</p>
+  
+  <div class="chat-container" id="chat-container"></div>
+  
+  <div class="input-container">
+    <input type="text" id="message-input" placeholder="Type your message...">
+    <button id="send-button">Send</button>
+    <button id="reset-button">Reset</button>
+  </div>
+
+  <script>
+    const chatContainer = document.getElementById('chat-container');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const resetButton = document.getElementById('reset-button');
+
+    // Add a user message to the chat
+    function addUserMessage(message) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', 'user-message');
+      messageElement.textContent = message;
+      chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Add an agent message to the chat
+    function addAgentMessage(message) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', 'agent-message');
+      messageElement.textContent = message;
+      chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Add a loading indicator
+    function addLoadingIndicator() {
+      const loadingElement = document.createElement('div');
+      loadingElement.classList.add('message', 'agent-message', 'loading');
+      loadingElement.id = 'loading-indicator';
+      loadingElement.textContent = 'Agent is thinking...';
+      chatContainer.appendChild(loadingElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Remove loading indicator
+    function removeLoadingIndicator() {
+      const loadingElement = document.getElementById('loading-indicator');
+      if (loadingElement) {
+        loadingElement.remove();
+      }
+    }
+
+    // Send a message to the agent
+    async function sendMessage(message) {
+      if (!message.trim()) return;
+
+      addUserMessage(message);
+      addLoadingIndicator();
+      
+      try {
+        const response = await fetch('/api/agent/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await response.json();
+        removeLoadingIndicator();
+        
+        if (response.ok) {
+          addAgentMessage(data.message);
+        } else {
+          addAgentMessage(`Error: ${data.error}`);
+        }
+      } catch (error) {
+        removeLoadingIndicator();
+        addAgentMessage(`Error: ${error.message}`);
+      }
+    }
+
+    // Reset the conversation
+    async function resetConversation() {
+      try {
+        const response = await fetch('/api/agent/reset', {
+          method: 'POST',
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Clear the chat container
+          chatContainer.innerHTML = '';
+          addAgentMessage('Conversation has been reset.');
+        } else {
+          addAgentMessage(`Error: ${data.error}`);
+        }
+      } catch (error) {
+        addAgentMessage(`Error: ${error.message}`);
+      }
+    }
+
+    // Event listeners
+    sendButton.addEventListener('click', () => {
+      const message = messageInput.value;
+      if (message.trim()) {
+        sendMessage(message);
+        messageInput.value = '';
+      }
+    });
+
+    messageInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        const message = messageInput.value;
+        if (message.trim()) {
+          sendMessage(message);
+          messageInput.value = '';
+        }
+      }
+    });
+
+    resetButton.addEventListener('click', resetConversation);
+
+    // Add initial greeting
+    addAgentMessage('Hello! I\'m your RSK blockchain assistant. How can I help you today?');
+  </script>
+</body>
+</html> 

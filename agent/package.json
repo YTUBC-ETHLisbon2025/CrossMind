@@ -1,0 +1,31 @@
+{
+  "name": "rsk-ai-agent",
+  "version": "1.0.0",
+  "description": "AI Agent for Rootstock blockchain using Claude and MCP",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "rsk",
+    "blockchain",
+    "claude",
+    "mcp"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.50.3",
+    "@modelcontextprotocol/sdk": "^1.11.1",
+    "dotenv": "^16.5.0",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
