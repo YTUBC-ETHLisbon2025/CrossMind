@@ -58,12 +58,12 @@ export default function Home() {
             </div>
           </div>
           <div className="flex justify-center items-center gap-6">
-            <button className="hover:text-[#2b4bbf] transition-colors">
+            <Link href="https://github.com/YTUBC-ETHLisbon2025/CrossMind" className="hover:text-[#2b4bbf] transition-colors" >
               Github
-            </button>
-            <button className="hover:text-[#2b4bbf] transition-colors">
+            </Link>
+            <Link href="https://github.com/YTUBC-ETHLisbon2025/CrossMind/blob/master/README.md" className="hover:text-[#2b4bbf] transition-colors">
               Docs
-            </button>
+            </Link>
             {walletAddress ? (
               <div className="rounded-full px-6 py-2 text-white bg-[#2b4bbf]">
                 {formatWalletAddress(walletAddress)}
@@ -97,9 +97,11 @@ export default function Home() {
               >
                 Go To App
               </Link>
-              <button className="bg-white border-white rounded-3xl font-semibold py-3 px-6 transition-all duration-300 hover:text-[#2b4bbf] ">
+              <Link 
+              href="https://github.com/YTUBC-ETHLisbon2025/CrossMind/blob/master/README.md"
+              className="bg-white border-white rounded-3xl font-semibold py-3 px-6 transition-all duration-300 hover:text-[#2b4bbf] ">
                 See the Docs
-              </button>
+              </Link>
             </div>
           </div>
         </section>
