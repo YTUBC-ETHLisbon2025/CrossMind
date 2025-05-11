@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const config = require('./config/env');
+const cors = require('cors');
 
 let claudeAgent = require('./services/claudeAgent');
 
@@ -28,6 +29,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 // Add request logging middleware
 app.use((req, res, next) => {
