@@ -2,8 +2,6 @@
 
 This is an AI agent that uses Claude to interact with the Rootstock blockchain through the RSK Model Context Protocol (MCP) server.
 
-## Features
-
 - Chat with the AI agent about Rootstock blockchain
 - Use blockchain tools through natural language
 - Perform operations like:
@@ -14,9 +12,7 @@ This is an AI agent that uses Claude to interact with the Rootstock blockchain t
   - Deploy various contracts
 
 ## Prerequisites
-
 - Node.js (v16+)
-- RSK MCP Server (set up and running)
 - Anthropic API Key (for Claude)
 
 ## Installation
@@ -24,6 +20,9 @@ This is an AI agent that uses Claude to interact with the Rootstock blockchain t
 1. Clone the repository
 2. Install dependencies:
    ```
+   cd mcp-server
+   npm install
+   cd ../agent
    npm install
    ```
 3. Create a `.env` file with the following variables:
@@ -33,10 +32,10 @@ This is an AI agent that uses Claude to interact with the Rootstock blockchain t
    SEED_PHRASE=your_twelve_word_seed_phrase_here
 
    # MCP Server Configuration
-   MCP_SERVER_PATH=../rsk-mcp-server/build/index.js
+   MCP_SERVER_PATH=../mcp-server/build/index.js
 
    # Server Configuration
-   PORT=3000
+   PORT=3001
    ```
 
 ## Usage
