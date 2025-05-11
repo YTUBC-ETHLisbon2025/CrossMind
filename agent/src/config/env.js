@@ -9,7 +9,7 @@ module.exports = {
   ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
   
   // MCP Server Configuration
-  MCP_SERVER_PATH: process.env.MCP_SERVER_PATH,
+  MCP_SERVER_PATH: "../mcp-server/build/index.js",
   
   // Server Configuration
   PORT: process.env.PORT || 3000

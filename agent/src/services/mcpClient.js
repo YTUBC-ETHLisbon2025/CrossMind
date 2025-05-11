@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const config = require('../config/env');
 
 /**
- * MCPClient - A service to interact with the RSK MCP server 
+ * MCPClient - A service to interact with the MCP server
  */
 class MCPClient {
   constructor() {
@@ -16,7 +16,7 @@ class MCPClient {
    */
   async initialize() {
     try {
-      console.log('Starting RSK MCP server...');
+      console.log('Starting MCP server...');
       
       // Start the MCP server as a child process
       this.mcpServerProcess = spawn('node', [config.MCP_SERVER_PATH], {
@@ -79,8 +79,8 @@ class MCPClient {
       const toolsResponse = await this.client.listTools();
       this.availableTools = toolsResponse.tools;
 
-      console.log('MCP Client initialized successfully');
       console.log(`Available tools: ${this.availableTools.map(tool => tool.name).join(', ')}`);
+      console.log('\nMCP Client initialized successfully');
 
       return this.availableTools;
     } catch (error) {
@@ -105,7 +105,6 @@ class MCPClient {
       throw new Error('MCP client not initialized');
     }
 
-    console.log('CALLTOOLLLLL')
     try {
       console.log(`Calling tool: ${toolName} with args:`, args);
       const response = await this.client.callTool({name: toolName, arguments: args});
@@ -141,5 +140,5 @@ class MCPClient {
   }
 }
 
-// Export a singleton instance
+// Export a instance of the MCP Client
 module.exports = new MCPClient(); 

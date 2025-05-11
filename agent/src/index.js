@@ -3,36 +3,22 @@ const path = require('path');
 const fs = require('fs');
 const config = require('./config/env');
 
-// Determine which MCP client to use - try real first, fall back to mock
-let mcpClient;
-let claudeAgent;
+let claudeAgent = require('./services/claudeAgent');
 
-// Try to determine if we can use the real MCP client
+let mcpClient;
+// Create the MCP client
 try {
   // Check if the MCP server file exists
   if (config.MCP_SERVER_PATH && fs.existsSync(config.MCP_SERVER_PATH)) {
     console.log('Found MCP server at:', config.MCP_SERVER_PATH);
-    // We'll attempt to use the real MCP client
-    console.log('Attempting to use real MCP client');
-    try {
-      mcpClient = require('./services/mcpClient');
-    } catch (error) {
-      console.error('Error loading real MCP client:', error.message);
-      console.log('Falling back to mock MCP client');
-      mcpClient = require('./services/mockMcpClient');
-    }
+    mcpClient = require('./services/mcpClient');
   } else {
-    console.log('MCP server not found at:', config.MCP_SERVER_PATH);
-    console.log('Using mock MCP client');
-    mcpClient = require('./services/mockMcpClient');
+    console.log('MCP server not found at:', config.MCP_SERVER_PATH);   
   }
 } catch (error) {
-  console.error('Error initializing MCP client, falling back to mock client:', error.message);
-  mcpClient = require('./services/mockMcpClient');
+  console.error('Error initializing MCP client:', error.message);
 }
 
-// Load Claude agent after MCP client is determined
-claudeAgent = require('./services/claudeAgent');
 // Inject the MCP client into Claude agent
 claudeAgent.setMcpClient(mcpClient);
 const agentRoutes = require('./routes/agentRoutes');

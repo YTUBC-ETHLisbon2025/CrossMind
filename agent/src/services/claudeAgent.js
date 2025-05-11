@@ -5,7 +5,7 @@ const config = require('../config/env');
 let mcpClient = null;
 
 /**
- * ClaudeAgent - A service to interact with Claude AI
+ *  A service to interact with Claude AI
  */
 class ClaudeAgent {
   constructor() {
@@ -14,11 +14,15 @@ class ClaudeAgent {
     });
     // Use the latest Claude model without specifying a date
     this.model = 'claude-3-opus-20240229';
-    this.systemPrompt = `You are an AI assistant that can interact with the Rootstock blockchain.
+    this.systemPrompt = `You are an AI assistant that can interact with multiple blockchains.
 You have access to various blockchain tools to help users interact with Rootstock.
 When a user wants to perform an operation on the blockchain, use the appropriate tool.
 For contract interactions, explain clearly what you're doing.
-When preparing transactions, always confirm with the user before proceeding with any operation that would modify state.`;
+When preparing transactions, always confirm with the user before proceeding with any operation that would modify state. When you're ready to send a transaction, call the appropriate tool.
+
+You can interact with Ethereum, Rootstock, and bridge USDC token between them.
+if you need the address of a erc20 token but the user only provides the token name, try to find it using the token name.
+`;
     this.messageHistory = [];
   }
 
@@ -93,7 +97,7 @@ When preparing transactions, always confirm with the user before proceeding with
         tools: this.tools
       });
 
-      console.log('Received response from Claude: ', response, "\n\n");
+      console.log('\nReceived response from Claude: ', response, "\n\n");
       
       // Process tool calls if present
       if (response.content && response.content.length > 0) {

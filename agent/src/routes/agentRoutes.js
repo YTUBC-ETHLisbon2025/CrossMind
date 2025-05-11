@@ -1,6 +1,6 @@
 const express = require('express');
 const claudeAgent = require('../services/claudeAgent');
-
+const { mnemonicToAccount } = require('viem/accounts');
 const router = express.Router();
 
 /**
@@ -36,5 +36,14 @@ router.post('/reset', (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+router.get('/get-wallet-address', (req, res) => {
+  const seedPhrase = process.env.SEED_PHRASE;
+  if (!seedPhrase) {
+    return res.status(500).json({ error: 'Seed phrase not found' });
+  }
+  const walletAddress = mnemonicToAccount(seedPhrase).address;
+  return res.json({ walletAddress });
+})
 
 module.exports = router; 

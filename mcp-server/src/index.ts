@@ -7,18 +7,25 @@ import {
 import { version } from "./version.js";
 import * as dotenv from "dotenv";
 import { mnemonicToAccount } from "viem/accounts";
-import { rootstock, rootstockTestnet } from "viem/chains";
+import { rootstock, rootstockTestnet, mainnet } from "viem/chains";
 import { createWalletClient, http, publicActions } from "viem";
 import { rskMcpTools, toolToHandler } from "./tools/index.js";
-import { RSK_RPC_URL } from "./lib/constants.js";
+import { RSK_RPC_URL, ETHEREUM_RPC_URL } from "./lib/constants.js";
 
 async function main() {
   dotenv.config();
   const seedPhrase = process.env.SEED_PHRASE;
+
   console.error('IN MCP: seedPhrase', seedPhrase);
   if (!seedPhrase) {
     console.error(
       "Please set SEED_PHRASE environment variable in your .env file"
+    );
+    process.exit(1);
+  }
+  if (!ETHEREUM_RPC_URL) {
+    console.error(
+      "Please set ETHEREUM_RPC_URL environment variable in your .env file"
     );
     process.exit(1);
   }

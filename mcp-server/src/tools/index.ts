@@ -8,7 +8,66 @@ import {
   deployPropertyNFTHandler,
   deployPropertyTokenHandler,
   deployPropertyYieldVaultHandler,
+  bridgeUsdcToRootstockHandler,
+  ethBalanceHandler,
+  ethErc20BalanceHandler,
 } from "./handlers.js";
+
+import dotenv from 'dotenv';
+dotenv.config();
+//The interface for the bridge_usdc_to_rootstock tool.
+const bridgeUsdcToRootstockTool: Tool = {
+  name: 'bridge_usdc_to_rootstock',
+  description: 'Bridge USDC from Ethereum mainnet to Rootstock network. Arguments: amount (in USDC), destination address (on Rootstock).',
+  arguments: [
+    {
+      name: 'amount',
+      type: 'string',
+      description: 'Amount of USDC to bridge (as a decimal, e.g., "1.5" for 1.5 USDC).',
+      required: true,
+    },
+    {
+      name: 'destination',
+      type: 'string',
+      description: 'Destination Rootstock address to receive bridged USDC.',
+      required: true,
+    },
+  ],
+  inputSchema: {
+    type: 'object',
+    properties: {
+      amount: { type: 'string', description: 'Amount of USDC to bridge (as a decimal, e.g., "1.5" for 1.5 USDC).' },
+      destination: { type: 'string', description: 'Destination Rootstock address to receive bridged USDC.' },
+    },
+    required: ['amount', 'destination'],
+  },
+}
+
+//The interface for the eth_balance tool.
+const ethBalanceTool: Tool = {
+  name: "eth_balance",
+  description: "Get the ETH balance of the current account on Ethereum mainnet",
+  inputSchema: {
+    type: "object",
+    properties: {},
+  },
+};
+
+//The interface for the eth_erc20_balance tool.
+const ethErc20BalanceTool: Tool = {
+  name: "eth_erc20_balance",
+  description: "Get the ERC20 token balance of the current account on Ethereum mainnet",
+  inputSchema: {
+    type: "object",
+    properties: {
+      contractAddress: {
+        type: "string",
+        description: "The ERC20 contract address on Ethereum mainnet",
+      },
+    },
+    required: ["contractAddress"],
+  },
+};
 
 const callContractTool: Tool = {
   name: "call_contract",
@@ -39,6 +98,8 @@ const callContractTool: Tool = {
     required: ["contractAddress", "functionName", "abi"],
   },
 };
+
+// Rest is prebuilt tools for Rootstock.
 
 const erc20BalanceTool: Tool = {
   name: "erc20_balance",
@@ -178,9 +239,11 @@ export const rskMcpTools: Tool[] = [
   deployPropertyNFTTool,
   deployPropertyTokenTool,
   deployPropertyYieldVaultTool,
+  bridgeUsdcToRootstockTool,
+  ethBalanceTool,
+  ethErc20BalanceTool,
 ];
 
-// biome-ignore lint/complexity/noBannedTypes: temp
 export const toolToHandler: Record<string, Function> = {
   call_contract: callContractHandler,
   erc20_balance: erc20BalanceHandler,
@@ -190,4 +253,7 @@ export const toolToHandler: Record<string, Function> = {
   deploy_property_nft: deployPropertyNFTHandler,
   deploy_property_token: deployPropertyTokenHandler,
   deploy_property_yield_vault: deployPropertyYieldVaultHandler,
+  bridge_usdc_to_rootstock: bridgeUsdcToRootstockHandler,
+  eth_balance: ethBalanceHandler,
+  eth_erc20_balance: ethErc20BalanceHandler,
 };

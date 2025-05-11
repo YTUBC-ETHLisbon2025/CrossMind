@@ -65,3 +65,7 @@ export const DeployPropertyYieldVaultSchema = z.object({
     .string()
     .describe("The ID of the specific property NFT this vault is linked to"),
 });
+
+export const EthBalanceSchema = z.object({
+  address: z.string().describe("The Ethereum address to get the ETH balance of"),
+});
