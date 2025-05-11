@@ -30,16 +30,14 @@ export default function ChatPage() {
     if (!pendingResponse) return;
 
     const text = pendingResponse;
-    let index = 0;
+    let currentText = "";
 
     setMessages((prev) => {
       const updated = [...prev];
-
       const last = updated[updated.length - 1];
       if (!last || last.role !== "assistant") {
         updated.push({ role: "assistant", content: "" });
       }
-
       return updated;
     });
 
@@ -48,10 +46,11 @@ export default function ChatPage() {
         const updated = [...prev];
         const last = updated[updated.length - 1];
 
-        if (last?.role === "assistant" && text[index] !== undefined) {
+        if (last?.role === "assistant") {
+          currentText = text.slice(0, currentText.length + 1);
           updated[updated.length - 1] = {
             ...last,
-            content: last.content + text[index],
+            content: currentText,
           };
           return updated;
         }
@@ -59,9 +58,7 @@ export default function ChatPage() {
         return prev;
       });
 
-      index++;
-
-      if (index >= text.length) {
+      if (currentText.length >= text.length) {
         clearInterval(interval);
         setPendingResponse("");
       }
@@ -126,12 +123,14 @@ export default function ChatPage() {
       </header>
 
       <div
-        className={`overflow-y-auto px-4 pt-6 pb-0 space-y-4 transition-all duration-500 ${messages.length === 0 && showIntro
+        className={`overflow-y-auto px-4 pt-6 pb-0 space-y-4 transition-all duration-500 relative ${messages.length === 0 && showIntro
           ? "h-[calc(100vh-160px)] flex items-start justify-center flex-1 py-0 my-0"
           : "h-[500px]"
           }`}
       >
-        <div className="mx-auto w-[50%]">
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#f3f3f2] to-transparent pointer-events-none z-10"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#f3f3f2] to-transparent pointer-events-none z-10"></div>
+        <div className="mx-auto w-[50%] px-8">
           {messages.length === 0 && showIntro && (
             <div className="text-center text-gray-600 mt-32 animate-fade-in">
               <h1 className="text-4xl font-bold mb-2 text-black">
@@ -146,7 +145,7 @@ export default function ChatPage() {
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`max-w-[75%] w-fit px-4 py-3 rounded-2xl whitespace-pre-wrap leading-relaxed text-sm shadow-md break-words ${msg.role === "user"
+              className={`max-w-[75%] w-fit px-4 py-3 rounded-2xl whitespace-pre-wrap leading-relaxed text-sm shadow-md break-words gap-3 !mb-3 ${msg.role === "user"
                 ? "bg-[#2b4bbf] text-white ml-auto text-end"
                 : "bg-white text-black mr-auto text-start"
                 }`}
@@ -162,7 +161,7 @@ export default function ChatPage() {
                   <span className="inline-block animate-bounce">.</span>
                 </div>
               ) : (
-                msg.content
+                <div className="whitespace-pre-wrap">{msg.content}</div>
               )}
             </div>
           ))}
@@ -181,36 +180,29 @@ export default function ChatPage() {
           }`}
       >
         <div className="max-w-[60%] mx-auto relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 pointer-events-none z-10">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </div>
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 pointer-events-none z-10">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-          <div className="overflow-x-auto pb-2 scrollbar-hide">
-            <div className="flex gap-3 justify-content items-center min-w-max px-10">
-              {[
-                "⁠What is my address",
-                "⁠What is my ETH balance on Ethereum",
-                "⁠What is my USDC balance on Ethereum",
-                // TODO: Bunu kisalt hepsi gorunmesin
-                "⁠What is my USDC erc20 balance on Rootstock with this contract id: 0x74c9f2b00581F1B11AA7ff05aa9F608B7389De67",
-                "⁠Bridge 1 USDC from Ethereum to Rootstock"
-              ].map((suggestion) => (
-                <button
-                  key={suggestion}
-                  type="button"
-                  onClick={() => sendMessage(suggestion)}
-                  disabled={isLoading}
-                  className="bg-white/80 hover:bg-white text-black text-sm px-4 py-2 rounded-full transition disabled:opacity-50 shadow-sm whitespace-nowrap"
-                >
-                  {suggestion}
-                </button>
-              ))}
+          <div className="relative">
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#f3f3f2] to-transparent pointer-events-none z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#f3f3f2] to-transparent pointer-events-none z-10"></div>
+            <div className="overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-3 justify-content items-center min-w-max px-10">
+                {[
+                  "⁠What is my address",
+                  "⁠What is my ETH balance on Ethereum",
+                  "⁠What is my USDC balance on Ethereum",
+                  "⁠What is my USDC erc20 balance on Rootstock with this contract id: 0x74c9f2b00581F1B11AA7ff05aa9F608B7389De67",
+                  "⁠Bridge 1 USDC from Ethereum to Rootstock"
+                ].map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() => sendMessage(suggestion)}
+                    disabled={isLoading}
+                    className="bg-white/80 hover:bg-white text-black text-sm px-4 py-2 rounded-full transition disabled:opacity-50 shadow-sm whitespace-nowrap"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ declare global {
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +23,25 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const fetchWalletAddress = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/agent/get-wallet-address');
+        const data = await response.json();
+        setWalletAddress(data.walletAddress);
+      } catch (error) {
+        console.error('Error fetching wallet address:', error);
+      }
+    };
+
+    fetchWalletAddress();
+  }, []);
+
+  const formatWalletAddress = (address: string) => {
+    if (!address) return '';
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
 
   return (
     <>
@@ -45,9 +65,15 @@ export default function Home() {
             <button className="hover:text-[#2b4bbf] transition-colors">
               Docs
             </button>
-            <button className="rounded-full px-6 py-2 text-white bg-[#2b4bbf] hover:bg-[#1e3a8a] transition-colors">
-              Create Wallet
-            </button>
+            {walletAddress ? (
+              <div className="rounded-full px-6 py-2 text-white bg-[#2b4bbf]">
+                {formatWalletAddress(walletAddress)}
+              </div>
+            ) : (
+              <div className="rounded-full px-6 py-2 text-white bg-[#2b4bbf] animate-pulse">
+                Loading...
+              </div>
+            )}
           </div>
         </div>
 
@@ -61,11 +87,10 @@ export default function Home() {
             ></div>
             <h1 className="text-6xl font-bold text-[#f3f3f2] mb-6">
               1 AI ChatBot, 
-              <span className="text-[#2b4bbf]"> all web3</span>
+              <span className="text-[#2b4bbf]">all web3</span>
             </h1>
             <p className="text-xl text-gray-700 mb-12 max-w-2xl mx-auto">
-              Experience seamless cross-chain communication with our advanced AI
-              chatbot
+            Perform onchain operations simply by chatting with an AI!
             </p>
             <div className="flex justify-center gap-8">
               <Link
@@ -86,48 +111,23 @@ export default function Home() {
         {/* Features */}
         <section className="px-6 py-20 text-center">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl font-bold mb-16">
+            <h2 className="text-4xl font-bold mb-6">
               What is <span className="text-[#2b4bbf]">CrossMind</span>?
             </h2>
-            <div className="grid md:grid-cols-3 gap-12">
-              {[
-                {
-                  title: "Cross-Chain",
-                  description:
-                    "Seamlessly communicate across different blockchain networks",
-            
-                },
-                {
-                  title: "AI-Powered",
-                  description:
-                    "Advanced AI technology for intelligent responses",
-
-                },
-                {
-                  title: "Secure",
-                  description: "Built with security and privacy in mind",
-
-                },
-              ].map((feature, index) => (
-                <div
-                  key={index}
-                  className="p-6 rounded-2xl hover:bg-gray-50 transition-all duration-300"
-                >
-                  <h3 className="text-xl font-semibold mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
-              ))}
+            <div className="max-w-3xl mx-auto">
+              <p className="text-gray-700 text-lg leading-relaxed">
+                Crossmind is an AI agent that enables users —especially blockchain newcomers— to perform complex onchain and crosschain operations simply by chatting with an AI.
+                <br /><br />
+                The agent abstracts away blockchain UX complexity, allowing users to interact with blockchains and bridge assets between them, all through natural language.
+              </p>
             </div>
           </div>
-
         </section>
               {/* Animated Chat Example */}
               <section className="px-6 pb-10 text-center">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl font-bold mb-16">
-              See it in <span className="text-[#2b4bbf]">Action</span>
+            <h2 className="text-4xl font-bold mb-6">
+              Take a <span className="text-[#2b4bbf]">Look</span>
             </h2>
             <div className="bg-white rounded-3xl p-8 shadow-lg max-w-2xl mx-auto">
               <div className="space-y-4 text-left">
