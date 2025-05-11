@@ -93,7 +93,7 @@ When preparing transactions, always confirm with the user before proceeding with
         tools: this.tools
       });
 
-      console.log('Received response from Claude');
+      console.log('Received response from Claude: ', response, "\n\n");
       
       // Process tool calls if present
       if (response.content && response.content.length > 0) {

@@ -4,7 +4,7 @@
   "description": "AI Agent for Rootstock blockchain using Claude and MCP",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "cd ../rsk-mcp-server && npm run build && cd ../agent && node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
