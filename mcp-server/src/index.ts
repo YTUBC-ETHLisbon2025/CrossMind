@@ -16,7 +16,7 @@ async function main() {
   dotenv.config();
   const seedPhrase = process.env.SEED_PHRASE;
 
-  console.error('IN MCP: seedPhrase', seedPhrase);
+
   if (!seedPhrase) {
     console.error(
       "Please set SEED_PHRASE environment variable in your .env file"
