@@ -6,7 +6,7 @@ This project is a proof-of-concept AI agent that enables users—especially bloc
 
 ---
 
-## 🧠 Project Idea
+## Project Idea
 
 - **Goal:** Make onchain and crosschain operations as easy as chatting with an AI.
 - **How:** Users talk to the agent (powered by Claude, but model-agnostic), which interprets their intent and executes blockchain operations using a set of tools.
@@ -14,7 +14,7 @@ This project is a proof-of-concept AI agent that enables users—especially bloc
 
 ---
 
-## 🏗️ Architecture Overview
+##  Architecture Overview
 
 The project consists of two main components:
 
@@ -32,7 +32,7 @@ The project consists of two main components:
 
 ---
 
-## 🛠️ Available Tools
+##  Available Tools
 
 The following tools are available via the agent (as of this hackathon demo):
 
@@ -97,6 +97,10 @@ MCP_SERVER_PATH=../mcp-server/build/index.js
 PORT=3000
 ```
 
+Create a `.env` file in the `mcp-server` directory:
+# Wallet seed phrase (for demo, paste your 12-word mnemonic)
+SEED_PHRASE=your_twelve_word_seed_phrase_here
+
 ### 4. Start the agent
 
 ```bash
@@ -135,7 +139,8 @@ Here are some example prompts you can use with the agent:
 
 ---
 
-## ⚠️ Hackathon Notes
+##  Hackathon Notes
+The ultimate goal of this AI agent is to provide users whatever they can do in web3. In the future, we plan to extend the MCP server to support all major blockchain, and set up routes between all of them. This MVP is fully working with some tools for Ethereum/Rootstock, and can be seen as how it will look like in the future.
 
 - **Local only:** For now, everything runs locally. No hosted UI or cloud agent. 
 - **Wallet management:** You must paste your seed phrase in the `.env` file. (Not production safe!)
@@ -144,7 +149,7 @@ Here are some example prompts you can use with the agent:
 
 ---
 
-## 🧩 How it Works
+##  How it Works
 
 1. User sends a message (e.g., "What's my ETH balance?" or "Bridge 1 USDC to Rootstock").
 2. The agent (Claude) interprets the intent and selects the right tool.
@@ -154,16 +159,17 @@ Here are some example prompts you can use with the agent:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 mcp-server/   # Blockchain tool server (Rootstock + Ethereum + bridging)
 agent/        # AI agent logic, API server, and Claude integration
+front-end/    # Next.js front-end that communicates with the agent via REST API
 ```
 
 ---
 
-## 🙏 Acknowledgements
+##  Acknowledgements
 
 - Rootstock team for the original MCP server and tool framework
 - Anthropic for Claude API
