@@ -98,9 +98,10 @@ PORT=3000
 ```
 
 Create a `.env` file in the `mcp-server` directory:
+```
 # Wallet seed phrase (for demo, paste your 12-word mnemonic)
 SEED_PHRASE=your_twelve_word_seed_phrase_here
-
+```
 ### 4. Start the agent
 
 ```bash
