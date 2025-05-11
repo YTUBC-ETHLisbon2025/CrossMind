@@ -1,0 +1,9 @@
+[submodule "olas/mech"]
+	path = olas/mech
+	url = https://github.com/valory-xyz/mech.git
+[submodule "olas/olas-sdk-starter"]
+	path = olas/olas-sdk-starter
+	url = https://github.com/valory-xyz/olas-sdk-starter.git
+[submodule "olas/quickstart"]
+	path = olas/quickstart
+	url = https://github.com/valory-xyz/quickstart.git
