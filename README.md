@@ -170,6 +170,24 @@ front-end/    # Next.js front-end that communicates with the agent via REST API
 
 ---
 
+## Olas Network Deployment
+
+We have deployed our agent and custom tools to the Olas Network, making them available for public use and monetization:
+
+### Agent Deployment
+- Our CrossMind agent is now available on Olas Network: [View Agent](https://registry.olas.network/ethereum/agents/64)
+- This deployment allows other users to interact with our agent and perform cross-chain operations
+- The agent is monetized through Olas Network's payment system, enabling us to earn rewards as others use our agent
+
+### Custom Tools Deployment
+- We've converted and deployed our custom blockchain tools as Python components: [View Tools](https://registry.olas.network/ethereum/components/287)
+- These tools are now available for other developers to use in their own agents
+- The tools maintain the same functionality as our local implementation but are now accessible through Olas Network
+
+This deployment represents a significant step in making our technology more accessible and creating a sustainable ecosystem for cross-chain AI operations.
+
+---
+
 ##  Acknowledgements
 
 - Rootstock team for the original MCP server and tool framework
