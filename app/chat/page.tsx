@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { BiMailSend } from "react-icons/bi";
+import { IoMdArrowRoundUp } from "react-icons/io";
 import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
@@ -35,7 +35,6 @@ export default function ChatPage() {
     setMessages((prev) => {
       const updated = [...prev];
 
-      // Eğer son mesaj assistant değilse, boş assistant mesajı ekle
       const last = updated[updated.length - 1];
       if (!last || last.role !== "assistant") {
         updated.push({ role: "assistant", content: "" });
@@ -99,7 +98,6 @@ export default function ChatPage() {
       const fullResponse = data.reply ?? "No reply from assistant.";
 
       setIsLoading(false);
-      // loading mesajını sil, ardından yazı efekti için pending'e ata
       setMessages((prev) => [
         ...prev.slice(0, -1),
         { role: "assistant", content: "" },
@@ -114,16 +112,14 @@ export default function ChatPage() {
         ...prev.slice(0, -1),
         { role: "assistant", content: "Failed to fetch response." },
       ]);
-      //   await new Promise((resolve) => setTimeout(resolve, 0));
-      //   setPendingResponse(" Failed to fetch response.");
     }
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white flex flex-col">
-      <header className="py-4 px-6 border-b border-gray-800 bg-black/60 backdrop-blur sticky top-0 z-50">
-        <button onClick={() => router.back()}>
-          <h1 className="text-xl font-bold">YieldPilot Chat</h1>
+    <main className="min-h-screen bg-[#f3f3f2] text-black flex flex-col">
+      <header className="py-4 px-6 border-b border-gray-200 bg-white/60 backdrop-blur sticky top-0 z-50">
+        <button onClick={() => router.back()} className="flex items-center gap-2">
+          <h1 className="text-xl font-bold text-black">CrossMind Chat</h1>
         </button>
       </header>
 
@@ -131,17 +127,17 @@ export default function ChatPage() {
         className={`overflow-y-auto px-4 pt-6 pb-0 space-y-4 transition-all duration-500 ${
           messages.length === 0 && showIntro
             ? "h-[calc(100vh-160px)] flex items-start justify-center flex-1 py-0 my-0"
-            : "h-[500px] "
+            : "h-[500px]"
         }`}
       >
         <div className="mx-auto w-[50%]">
           {messages.length === 0 && showIntro && (
-            <div className="text-center text-gray-400 mt-32 animate-fade-in">
-              <h1 className="text-4xl font-bold mb-2 text-white">
-                Welcome to YieldPilot
+            <div className="text-center text-gray-600 mt-32 animate-fade-in">
+              <h1 className="text-4xl font-bold mb-2 text-black">
+                Welcome to CrossMind
               </h1>
               <p className="mb-6 text-sm text-gray-500 mt-4">
-                Your DeFi AI Agent is ready. Ask anything.
+                Your AI Agent is ready. Ask anything.
               </p>
             </div>
           )}
@@ -151,8 +147,8 @@ export default function ChatPage() {
               key={i}
               className={`max-w-[75%] w-fit px-4 py-3 rounded-2xl whitespace-pre-wrap leading-relaxed text-sm shadow-md break-words ${
                 msg.role === "user"
-                  ? "bg-gradient-to-r from-teal-400 to-cyan-400 text-black ml-auto text-end"
-                  : "bg-gray-800 text-white mr-auto text-start"
+                  ? "bg-[#2b4bbf] text-white ml-auto text-end"
+                  : "bg-white text-black mr-auto text-start"
               }`}
             >
               {msg.content === "__loading__" ? (
@@ -182,39 +178,56 @@ export default function ChatPage() {
         className={`transition-all duration-300 px-4 pt-4 pb-6 flex flex-col gap-6 ${
           messages.length === 0 && showIntro
             ? "flex flex-col justify-start items-center flex-1 !-mt-64 !gap-8"
-            : "sticky bottom-2 bg-transparent backdrop-blur "
+            : "sticky bottom-2 bg-transparent backdrop-blur"
         }`}
       >
-        <div className="flex flex-wrap gap-3 justify-center mt-6">
-          {[
-            "What’s the best yield today?",
-            "How do I move funds to Gnosis?",
-            "Show my Aave positions",
-          ].map((suggestion) => (
-            <button
-              key={suggestion}
-              type="button"
-              onClick={() => sendMessage(suggestion)}
-              disabled={isLoading}
-              className="bg-white/10 hover:bg-white/20 text-white text-sm px-4 py-2 rounded-full transition disabled:opacity-50"
-            >
-              {suggestion}
-            </button>
-          ))}
+        <div className="max-w-[60%] mx-auto relative">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 pointer-events-none z-10">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 pointer-events-none z-10">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+          <div className="overflow-x-auto pb-2 scrollbar-hide">
+            <div className="flex gap-3 justify-content items-center min-w-max px-10">
+              {[
+                "⁠What is my address",
+                "⁠What is my ETH balance on Ethereum",
+                "⁠What is my USDC balance on Ethereum",
+                "⁠What is my erc20 balance on Ethereum with this contract id: 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                "⁠What is my erc20 balance on Rootstock with this contract id: 0x74c9f2b00581F1B11AA7ff05aa9F608B7389De67",
+                "⁠Bridge 1 USDC from Ethereum to Rootstock"
+              ].map((suggestion) => (
+                <button
+                  key={suggestion}
+                  type="button"
+                  onClick={() => sendMessage(suggestion)}
+                  disabled={isLoading}
+                  className="bg-white/80 hover:bg-white text-black text-sm px-4 py-2 rounded-full transition disabled:opacity-50 shadow-sm whitespace-nowrap"
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="max-w-2xl w-full mx-auto flex gap-2 relative">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask anything about your DeFi portfolio..."
-            className="flex-1 rounded-xl px-4 py-3 text-sm bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+            className="flex-1 rounded-xl px-4 py-3 text-sm bg-white text-black border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2b4bbf] transition shadow-sm"
           />
           <button
             type="submit"
             disabled={isLoading}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-teal-500 hover:bg-teal-600 text-black font-medium px-1 py-1 rounded-full text-sm transition disabled:opacity-50"
+            className="absolute right-3 top-1/2 -translate-y-1/2 bg-[#2b4bbf] hover:bg-[#1e3a8a] text-white font-medium px-1 py-1 rounded-full text-sm transition disabled:opacity-50 shadow-sm"
           >
-            <BiMailSend className="w-5 h-5 " />
+            <IoMdArrowRoundUp className="w-5 h-5" />
           </button>
         </div>
       </form>
