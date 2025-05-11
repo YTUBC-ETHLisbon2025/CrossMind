@@ -12,6 +12,8 @@ This project is a proof-of-concept AI agent that enables users—especially bloc
 - **How:** Users talk to the agent (powered by Claude, but model-agnostic), which interprets their intent and executes blockchain operations using a set of tools.
 - **Demo:** For the hackathon, we implemented bridging USDC from Ethereum to Rootstock, reading balances, and other onchain actions.
 
+## Video Demo
+[Watch Demo](https://youtu.be/3Cyb6fUiJag)
 ---
 
 ##  Architecture Overview
