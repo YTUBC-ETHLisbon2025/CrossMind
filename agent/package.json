@@ -23,7 +23,8 @@
     "@anthropic-ai/sdk": "^0.50.3",
     "@modelcontextprotocol/sdk": "^1.11.1",
     "dotenv": "^16.5.0",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "viem": "^2.29.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
